@@ -13,6 +13,19 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
  * Provides an interface for defining Search page entities.
  */
 interface SearchApiPageInterface extends ConfigEntityInterface {
-  // Add get/set methods for your configuration properties here.
+
+  /**
+   * Return the path.
+   *
+   * @return string
+   */
+  public function getPath();
+
+  /**
+   * Return the path.
+   *
+   * @return string
+   */
+  public function getIndex();
 
 }

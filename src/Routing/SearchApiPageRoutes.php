@@ -9,7 +9,7 @@ namespace Drupal\search_api_page\Routing;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
-use Drupal\search_api_page\Entity\SearchApiPage;
+use Drupal\search_api_page\SearchApiPageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 
@@ -53,7 +53,7 @@ class SearchApiPageRoutes implements ContainerInjectionInterface {
   public function routes() {
     $routes = array();
 
-    /** @var $searchApiPage SearchApiPage */
+    /** @var $searchApiPage SearchApiPageInterface */
     foreach ($this->entityManager->getStorage('search_api_page')->loadMultiple() as $searchApiPage) {
       $routes['search_api_page.' . $searchApiPage->id()] = new Route(
         '/' . $searchApiPage->getPath() . '/{keyword}',

@@ -7,10 +7,10 @@
 
 namespace Drupal\search_api_page\Form;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\search_api_page\Entity\SearchApiPage;
+use Drupal\search_api\IndexInterface;
+use Drupal\search_api_page\SearchApiPageInterface;
 
 /**
  * Class SearchApiPageForm.
@@ -24,7 +24,7 @@ class SearchApiPageForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    /** @var $search_api_page SearchApiPage */
+    /** @var $search_api_page SearchApiPageInterface */
     $search_api_page = $this->entity;
     $form['label'] = array(
       '#type' => 'textfield',
@@ -49,6 +49,21 @@ class SearchApiPageForm extends EntityForm {
       '#maxlength' => 255,
       '#default_value' => $search_api_page->getPath(),
       '#description' => $this->t("Do not include the optional argument or trailing slash."),
+      '#required' => TRUE,
+    );
+
+    $options = array();
+    $searchApiIndexes = $this->entityManager->getStorage('search_api_index')->loadMultiple();
+    /** @var  $searchApiIndex IndexInterface */
+    foreach ($searchApiIndexes as $searchApiIndex) {
+      $options[$searchApiIndex->id()] = $searchApiIndex->label();
+    }
+
+    $form['index'] = array(
+      '#type' => 'select',
+      '#title' => $this->t('Search API index'),
+      '#options' => $options,
+      '#default_value' => $search_api_page->getIndex(),
       '#required' => TRUE,
     );
 

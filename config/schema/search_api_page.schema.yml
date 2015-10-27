@@ -11,5 +11,8 @@ search_api_page.search_api_page.*:
     path:
       type: string
       label: 'Path'
+    index:
+      type: string
+      label: 'Search index'
     uuid:
       type: string

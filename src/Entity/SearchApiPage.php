@@ -63,11 +63,24 @@ class SearchApiPage extends ConfigEntityBase implements SearchApiPageInterface {
   protected $path;
 
   /**
-   * Return the path.
+   * The Search Api index.
    *
-   * @return string
+   * @var string
+   */
+  protected $index;
+
+  /**
+   * {@inheritdoc}
    */
   public function getPath() {
     return $this->path;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getIndex() {
+    return $this->index;
+  }
+
 }
