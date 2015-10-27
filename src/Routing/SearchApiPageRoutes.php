@@ -59,6 +59,7 @@ class SearchApiPageRoutes implements ContainerInjectionInterface {
         '/' . $searchApiPage->getPath() . '/{keyword}',
         array(
           '_controller' => 'Drupal\search_api_page\Controller\SearchApiPageController::page',
+          'search_api_page' => $searchApiPage->id(),
           'keyword' => '',
         ),
         array(

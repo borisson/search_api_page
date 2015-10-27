@@ -14,11 +14,11 @@ use Drupal\Core\Controller\ControllerBase;
 class SearchApiPageController extends ControllerBase {
 
 
-  public function page($keyword = '') {
+  public function page($search_api_page, $keyword = '') {
 
     return array(
       '#title' => 'Search',
-      '#markup' => 'search page: ' . $keyword,
+      '#markup' => 'search page: ' . $search_api_page . ' - keyword: ' . $keyword,
     );
 
   }
