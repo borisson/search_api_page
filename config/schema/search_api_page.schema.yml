@@ -1,0 +1,15 @@
+search_api_page.search_api_page.*:
+  type: config_entity
+  label: 'Search page config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    path:
+      type: string
+      label: 'Path'
+    uuid:
+      type: string
