@@ -1,5 +1,5 @@
-Search API Pages
-----------------
+Search API Pages (Drupal 8 Port)
+---------------------------------
 
 This module allows you to create simple search pages and search blocks for
 searching in your Search API indexes, similar to the core Search functionality.
