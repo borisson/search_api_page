@@ -29,7 +29,7 @@ class SearchApiPageForm extends EntityForm {
 
     $form['label'] = array(
       '#type' => 'textfield',
-      '#title' => $this->t('Label'),
+      '#title' => $this->t('Title'),
       '#maxlength' => 255,
       '#default_value' => $search_api_page->label(),
       '#required' => TRUE,
@@ -51,6 +51,11 @@ class SearchApiPageForm extends EntityForm {
       '#default_value' => $search_api_page->getPath(),
       '#description' => $this->t("Do not include the optional argument or trailing slash."),
       '#required' => TRUE,
+    );
+
+    $form['previous_path'] = array(
+      '#type' => 'value',
+      '#value' => $search_api_page->getPath(),
     );
 
     $options = array();
@@ -83,6 +88,7 @@ class SearchApiPageForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
+    /** @var $search_api_page SearchApiPageInterface */
     $search_api_page = $this->entity;
     $status = $search_api_page->save();
 
@@ -98,6 +104,13 @@ class SearchApiPageForm extends EntityForm {
           '%label' => $search_api_page->label(),
         ]));
     }
+
+    // Trigger a router rebuild if path is different then original.
+    if ($form_state->getValue('path') != $form_state->getValue('previous_path')) {
+      \Drupal::service('router.builder')->rebuild();
+    }
+
+    // Set redirect.
     $form_state->setRedirectUrl($search_api_page->urlInfo('collection'));
   }
 

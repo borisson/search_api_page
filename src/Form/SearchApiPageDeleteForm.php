@@ -15,6 +15,7 @@ use Drupal\Core\Url;
  * Builds the form to delete Search page entities.
  */
 class SearchApiPageDeleteForm extends EntityConfirmFormBase {
+
   /**
    * {@inheritdoc}
    */
@@ -49,6 +50,9 @@ class SearchApiPageDeleteForm extends EntityConfirmFormBase {
         ]
         )
     );
+
+    // Trigger router rebuild.
+    \Drupal::service('router.builder')->rebuild();
 
     $form_state->setRedirectUrl($this->getCancelUrl());
   }

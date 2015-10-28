@@ -9,6 +9,7 @@ namespace Drupal\search_api_page;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 use Drupal\search_api_page\Entity\SearchApiPage;
 
 /**
@@ -20,7 +21,7 @@ class SearchApiPageListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildHeader() {
-    $header['label'] = $this->t('Search page');
+    $header['label'] = $this->t('Title');
     $header['path'] = $this->t('Path');
     return $header + parent::buildHeader();
   }
@@ -31,7 +32,7 @@ class SearchApiPageListBuilder extends ConfigEntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     /** @var $entity SearchApiPage */
     $row['label'] = $entity->label();
-    $row['path'] = $entity->getPath();
+    $row['path'] = \Drupal::l($entity->getPath(), Url::fromRoute('search_api_page.' . $entity->id()));
     return $row + parent::buildRow($entity);
   }
 
