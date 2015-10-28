@@ -49,7 +49,7 @@ class SearchApiPageForm extends EntityForm {
       '#title' => $this->t('Path'),
       '#maxlength' => 255,
       '#default_value' => $search_api_page->getPath(),
-      '#description' => $this->t("Do not include the optional argument or trailing slash."),
+      '#description' => $this->t("Do not include a trailing slash."),
       '#required' => TRUE,
     );
 
