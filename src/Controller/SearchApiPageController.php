@@ -34,7 +34,8 @@ class SearchApiPageController extends ControllerBase {
     // Create the query.
     $query = Utility::createQuery($searchApiIndex, array(
         'parse_mode' => 'direct',
-        'limit' => $searchApiPage->getLimit()
+        'limit' => $searchApiPage->getLimit(),
+        'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
       )
     );
 
@@ -62,6 +63,12 @@ class SearchApiPageController extends ControllerBase {
 
     if (!empty($results)) {
       $build['results'] = $results;
+
+      // Build pager.
+      pager_default_initialize($result->getResultCount(), $searchApiPage->getLimit());
+      $build['pager'] = array(
+        '#type' => 'pager',
+      );
     }
 
     return $build;
