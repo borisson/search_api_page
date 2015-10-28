@@ -26,6 +26,7 @@ class SearchApiPageForm extends EntityForm {
 
     /** @var $search_api_page SearchApiPageInterface */
     $search_api_page = $this->entity;
+
     $form['label'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
