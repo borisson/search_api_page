@@ -43,13 +43,7 @@ class SearchApiPageDeleteForm extends EntityConfirmFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->entity->delete();
 
-    drupal_set_message(
-      $this->t('@search_page_page_label has been deleted.',
-        [
-          '@search_page_page_label' => $this->entity->label()
-        ]
-        )
-    );
+    drupal_set_message($this->t('@search_page_page_label has been deleted.', ['@search_page_page_label' => $this->entity->label()]));
 
     // Trigger router rebuild.
     \Drupal::service('router.builder')->rebuild();
