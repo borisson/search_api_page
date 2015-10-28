@@ -7,8 +7,6 @@
 namespace Drupal\search_api_page\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
