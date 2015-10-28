@@ -68,6 +68,14 @@ class SearchApiPageForm extends EntityForm {
       '#required' => TRUE,
     );
 
+    $form['limit'] = array(
+      '#type' => 'number',
+      '#title' => $this->t('Limit'),
+      '#default_value' => $search_api_page->getLimit(),
+      '#min' => 1,
+      '#required' => TRUE,
+    );
+
     return $form;
   }
 

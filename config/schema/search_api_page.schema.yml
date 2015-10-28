@@ -14,5 +14,8 @@ search_api_page.search_api_page.*:
     index:
       type: string
       label: 'Search index'
+    limit:
+      type: integer
+      label: 'Limit'
     uuid:
       type: string

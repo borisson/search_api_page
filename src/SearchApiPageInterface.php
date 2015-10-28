@@ -28,4 +28,11 @@ interface SearchApiPageInterface extends ConfigEntityInterface {
    */
   public function getIndex();
 
+  /**
+   * Return the limit per page.
+   *
+   * @return int
+   */
+  public function getLimit();
+
 }

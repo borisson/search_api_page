@@ -70,6 +70,13 @@ class SearchApiPage extends ConfigEntityBase implements SearchApiPageInterface {
   protected $index;
 
   /**
+   * The limit per page.
+   *
+   * @var string
+   */
+  protected $limit = 10;
+
+  /**
    * {@inheritdoc}
    */
   public function getPath() {
@@ -81,6 +88,13 @@ class SearchApiPage extends ConfigEntityBase implements SearchApiPageInterface {
    */
   public function getIndex() {
     return $this->index;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLimit() {
+    return $this->limit;
   }
 
 }
