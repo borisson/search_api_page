@@ -79,6 +79,15 @@ class SearchApiPage extends ConfigEntityBase implements SearchApiPageInterface {
   /**
    * {@inheritdoc}
    */
+  public function calculateDependencies() {
+    parent::calculateDependencies();
+    // Figure out the dependency - problem is that index isn't enough probably.
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getPath() {
     return $this->path;
   }
