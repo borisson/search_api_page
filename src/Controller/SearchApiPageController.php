@@ -33,7 +33,11 @@ class SearchApiPageController extends ControllerBase {
     /** @var $searchApiIndex IndexInterface */
     $searchApiIndex = Index::load($searchApiPage->getIndex());
 
-    $query = Utility::createQuery($searchApiIndex);
+    $query = Utility::createQuery($searchApiIndex, array('parse_mode' => 'direct'));
+    if (!empty($keyword)) {
+      $query->keys($keyword);
+    }
+    $query->setFulltextFields(array('rendered_item'));
     $result = $query->execute();
     $items = $result->getResultItems();
 
