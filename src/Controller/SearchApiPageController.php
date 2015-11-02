@@ -13,13 +13,14 @@ use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api_page\Entity\SearchApiPage;
 use Drupal\search_api_page\SearchApiPageInterface;
 use Drupal\search_api\Utility;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Defines a controller to serve search pages.
  */
 class SearchApiPageController extends ControllerBase {
 
-  public function page($search_api_page, $keyword = '') {
+  public function page(Request $request, $search_api_page, $keyword = '') {
     $build = array();
 
     /** @var $searchApiPage SearchApiPageInterface */
@@ -35,7 +36,7 @@ class SearchApiPageController extends ControllerBase {
     $query = Utility::createQuery($searchApiIndex, array(
         'parse_mode' => 'direct',
         'limit' => $searchApiPage->getLimit(),
-        'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
+        'offset' => !is_null($request->get('page')) ? $request->get('page') : 0,
       )
     );
 
