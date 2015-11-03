@@ -15,7 +15,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 /**
- * Derives a facet source plugin definition for every search api view.
+ * Derives a facet source plugin definition for every search api page.
+ *
+ * The definition of this plugin happens in facet_source\SearchApiPage, in this
+ * deriver class we're actually getting all possible pages and creating plugins
+ * for each of them.
  *
  * @see \Drupal\search_api_page\Plugin\facetapi\facet_source\SearchApiPage
  */
@@ -93,7 +97,8 @@ class SearchApiPageDeriver implements ContainerDeriverInterface {
 
     if (!isset($this->derivatives[$base_plugin_id])) {
 
-      $plugin_derivatives = array();
+      $plugin_derivatives = [];
+
       /** @var \Drupal\Core\Entity\EntityStorageInterface $page_storage */
       $page_storage = $this->entityTypeManager->getStorage('search_api_page');
       $all_pages = $page_storage->loadMultiple();
@@ -102,6 +107,9 @@ class SearchApiPageDeriver implements ContainerDeriverInterface {
       foreach ($all_pages as $page) {
         $machine_name = $page->id();
 
+        // Add plugin derivatives, they have 'search_api_page' as a special key
+        // in them, because of this, there needs to happen less explode() magic
+        // in the plugin class.
         $plugin_derivatives[$machine_name] = [
           'id' => $base_plugin_id . PluginBase::DERIVATIVE_SEPARATOR . $machine_name,
           'label' => $this->t('Search api page: %page_name', ['%page_name' => $page->label()]),

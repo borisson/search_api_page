@@ -12,12 +12,13 @@ use Drupal\facetapi\Plugin\facetapi\facet_source\SearchApiBaseFacetSource;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Query\ResultSetInterface;
-use Drupal\search_api\Utility;
 use Drupal\search_api_page\SearchApiPageInterface;
 
 
 /**
- * Represents a facet source which represents the search api views.
+ * Represents a facet source which represents search_api_page pages.
+ *
+ * Most of the work of actually getting a page is done in the deriver.
  *
  * @FacetApiFacetSource(
  *   id = "search_api_page",
@@ -69,16 +70,12 @@ class SearchApiPage extends SearchApiBaseFacetSource {
     // Check if there are results in the static cache.
     $results = $this->searchApiResultsCache->getResults($this->pluginId);
 
-
-    // If our results are not there, execute the view to get the results.
+    // If there are no results, execute the search page and check for results
+    // again
     if (!$results) {
-      // If there are no results, execute the view. and check for results again!
       /** @var $searchApiPage SearchApiPageInterface */
       list(, $search_api_page) = explode(':', $this->pluginId);
       $searchApiPage = \Drupal\search_api_page\Entity\SearchApiPage::load($search_api_page);
-
-      // Page title.
-      $build['#title'] = $searchApiPage->label();
 
       /** @var $searchApiIndex IndexInterface */
       $searchApiIndex = Index::load($searchApiPage->getIndex());
@@ -91,7 +88,7 @@ class SearchApiPage extends SearchApiBaseFacetSource {
         'search id' => 'search_api_page:' . $searchApiPage->id()
       ]);
 
-      // Keywords.
+      // @todo Keywords
       if (!empty($keyword)) {
         $query->keys($keyword);
       }
@@ -99,6 +96,7 @@ class SearchApiPage extends SearchApiBaseFacetSource {
       // Index fields.
       $query->setFulltextFields(['rendered_item']);
 
+      // Execute the query.
       $results = $query->execute();
 
       // Set the path of all facets.
@@ -110,14 +108,15 @@ class SearchApiPage extends SearchApiBaseFacetSource {
       }
     }
 
-    // Get the results from the cache. It is possible it still errored out.
-    // @todo figure out what to do when this errors out.
+    // If we got results from the cache, this is the first code executed in this
+    // method, so it's good to double check that we can actually work with
+    // $results.
     if ($results instanceof ResultSetInterface) {
-      // Get our facet data.
+      // Get our facet data from the results.
       $facet_results = $results->getExtraData('search_api_facets');
 
-      // Loop over each facet and execute the build method from the given
-      // query type
+      // Loop over each facet and execute the build method from the given query
+      // type
       foreach ($facets as $facet) {
         $configuration = array(
           'query' => NULL,
