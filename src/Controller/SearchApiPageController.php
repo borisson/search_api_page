@@ -12,7 +12,6 @@ use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api_page\Entity\SearchApiPage;
 use Drupal\search_api_page\SearchApiPageInterface;
-use Drupal\search_api\Utility;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -33,12 +32,12 @@ class SearchApiPageController extends ControllerBase {
     $searchApiIndex = Index::load($searchApiPage->getIndex());
 
     // Create the query.
-    $query = Utility::createQuery($searchApiIndex, array(
-        'parse_mode' => 'direct',
-        'limit' => $searchApiPage->getLimit(),
-        'offset' => !is_null($request->get('page')) ? $request->get('page') : 0,
-      )
-    );
+    $query = $searchApiIndex->query([
+      'parse_mode' => 'direct',
+      'limit' => $searchApiPage->getLimit(),
+      'offset' => !is_null($request->get('page')) ? $request->get('page') : 0,
+      'search id' => 'search_api_page:' . $searchApiPage->id()
+    ]);
 
     // Keywords.
     if (!empty($keyword)) {

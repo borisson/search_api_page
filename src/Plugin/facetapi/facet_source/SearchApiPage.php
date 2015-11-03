@@ -84,12 +84,12 @@ class SearchApiPage extends SearchApiBaseFacetSource {
       $searchApiIndex = Index::load($searchApiPage->getIndex());
 
       // Create the query.
-      $query = Utility::createQuery($searchApiIndex, array(
-          'parse_mode' => 'direct',
-          'limit' => $searchApiPage->getLimit(),
-          'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
-        )
-      );
+      $query = $searchApiIndex->query([
+        'parse_mode' => 'direct',
+        'limit' => $searchApiPage->getLimit(),
+        'offset' => isset($_GET['page']) ? $_GET['page'] : 0,
+        'search id' => 'search_api_page:' . $searchApiPage->id()
+      ]);
 
       // Keywords.
       if (!empty($keyword)) {
@@ -97,7 +97,7 @@ class SearchApiPage extends SearchApiBaseFacetSource {
       }
 
       // Index fields.
-      $query->setFulltextFields(array('rendered_item'));
+      $query->setFulltextFields(['rendered_item']);
 
       $results = $query->execute();
 
