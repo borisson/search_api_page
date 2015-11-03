@@ -118,16 +118,18 @@ class SearchApiPage extends SearchApiBaseFacetSource {
       // Loop over each facet and execute the build method from the given query
       // type
       foreach ($facets as $facet) {
-        $configuration = array(
-          'query' => NULL,
-          'facet' => $facet,
-          'results' => $facet_results[$facet->getFieldIdentifier()],
-        );
+        if (isset($facet_results[$facet->getFieldIdentifier()])) {
+          $configuration = array(
+            'query' => NULL,
+            'facet' => $facet,
+            'results' => $facet_results[$facet->getFieldIdentifier()],
+          );
 
-        // Get the Facet Specific Query Type so we can process the results
-        // using the build() function of the query type.
-        $query_type = $this->queryTypePluginManager->createInstance($facet->getQueryType(), $configuration);
-        $query_type->build();
+          // Get the Facet Specific Query Type so we can process the results
+          // using the build() function of the query type.
+          $query_type = $this->queryTypePluginManager->createInstance($facet->getQueryType(), $configuration);
+          $query_type->build();
+        }
       }
     }
   }
