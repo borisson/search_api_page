@@ -98,14 +98,6 @@ class SearchApiPage extends SearchApiBaseFacetSource {
 
       // Execute the query.
       $results = $query->execute();
-
-      // Set the path of all facets.
-      $path = $searchApiPage->getPath();
-      if ($path) {
-        foreach ($facets as $facet) {
-          $facet->setPath($path);
-        }
-      }
     }
 
     // If we got results from the cache, this is the first code executed in this
@@ -132,6 +124,16 @@ class SearchApiPage extends SearchApiBaseFacetSource {
         }
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPath() {
+    /** @var $searchApiPage SearchApiPageInterface */
+    list(, $search_api_page) = explode(':', $this->pluginId);
+    $searchApiPage = \Drupal\search_api_page\Entity\SearchApiPage::load($search_api_page);
+    return $searchApiPage->getPath();
   }
 
   /**
